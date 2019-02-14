@@ -3,6 +3,8 @@
 // npm install -D nodemon 
 var express = require('express')
 var bodyParser = require('body-parser')
+var CocheController = require('./CocheController')
+var mongoose = require('mongoose')
 
 var app = express()
 
@@ -11,7 +13,40 @@ app.use(bodyParser.json())
 
 var PUERTO = 7777;
 
-app.get('/prueba', (req,res)=>{
+app.get('/coche/:id', CocheController.getCoche)
+app.get('/coches', CocheController.getCoches)
+app.post('/coche', CocheController.saveCoche)
+app.put('/coche/:id', CocheController.updateCoche)
+app.delete('/coche/:id', CocheController.deleteCoche)
+
+/*mongoose.connect('mongoosedb://localhost:27017/coches', (err,res)=>{
+    if(err){
+        console.log('Fallo en BD' + err)
+        throw err
+    }else{
+        console.log('Conexión con mongo correcta')
+        
+        app.listen(PUERTO, ()=>{
+            console.log('El servidor se arranco correctamente')
+        })
+    }
+})*/
+
+mongoose.connect('mongodb://localhost:27017/coches', { useNewUrlParser: true, useFindAndModify:false }).then(
+    () => {  
+        console.log('Conexión con mongo correcta') 
+        app.listen(PUERTO, ()=>{
+            console.log('El servidor se arranco correctamente')
+        })
+    },err => { console.log('fallo en la base de datos:'+err) }
+)
+
+
+
+
+
+
+/*app.get('/prueba', (req,res)=>{
     res.status(200).send("hola angel que tal")
 })
 
@@ -33,7 +68,5 @@ app.get('/saluda/:nombre?', (req,res)=>{
 app.get('/datos', (req,res)=>{
     res.status(200).send( {datos:[1,2,3], mensaje:'hola', valor:66} )
 })
+*/
 
-app.listen(PUERTO, ()=>{
-    console.log('El servidor se arranco correctamente')
-})
