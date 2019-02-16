@@ -1,23 +1,21 @@
 // npm install express
 // npm install body-parser
 // npm install -D nodemon 
-var express = require('express')
-var bodyParser = require('body-parser')
-var CocheController = require('./CocheController')
-var mongoose = require('mongoose')
+const express = require('express');
+const bodyParser = require('body-parser');
+const CocheController = require('./CocheController');
+const mongoose = require('mongoose');
+const PUERTO = 7777;
+const app = express();
 
-var app = express()
+app.use(bodyParser.urlencoded( {extended:false} ));
+app.use(bodyParser.json());
 
-app.use(bodyParser.urlencoded( {extended:false} ))
-app.use(bodyParser.json())
-
-var PUERTO = 7777;
-
-app.get('/coche/:id', CocheController.getCoche)
-app.get('/coches', CocheController.getCoches)
-app.post('/coche', CocheController.saveCoche)
-app.put('/coche/:id', CocheController.updateCoche)
-app.delete('/coche/:id', CocheController.deleteCoche)
+app.get('/coche/:id', CocheController.getCoche);
+app.get('/coches', CocheController.getCoches);
+app.post('/coche', CocheController.saveCoche);
+app.put('/coche/:id', CocheController.updateCoche);
+app.delete('/coche/:id', CocheController.deleteCoche);
 
 /*mongoose.connect('mongoosedb://localhost:27017/coches', (err,res)=>{
     if(err){
