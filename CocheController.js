@@ -1,7 +1,7 @@
-var Coche = require('./CocheModelo')
+let Coche =new require('./CocheModelo')
 
 function getCoche(req, res){
-    var idCoche = req.params.id
+    let idCoche = req.params.id
     
     Coche.findById(idCoche).then(
         cocheEncontrado => {
@@ -46,10 +46,10 @@ function getCoches(req, res){
 }
 
 function saveCoche(req, res){
-    var param = req.body
+    let param = req.body
     console.log(param)
     // res.status(200).send( {accion:"save", data: param})
-    var coche = new Coche();
+    let coche = new Coche();
     coche.nombre = param.nombre
     coche.modelo = param.modelo
     coche.precio = param.precio
@@ -66,11 +66,11 @@ function saveCoche(req, res){
 }
 
 function updateCoche(req, res){
-    var idCoche = req.params.id
-    var param = req.body
+    let idCoche = req.params.id
+    let param = req.body
 
     //{new:true}  ===>  hace que devuelva el nuevo coche insertado
-    Coche.findOneAndUpdate(idCoche, param, {new:true}).then(
+    Coche.findByIdAndUpdate(idCoche, param, {new:true}).then(
         cocheActualizado => {
             res.status(200).send( {accion:'update', data: cocheActualizado} )
         }
@@ -82,7 +82,16 @@ function updateCoche(req, res){
 }
 
 function deleteCoche(req, res){
-    var idCoche = req.params.id
+    let idCoche = req.params.id;
+    Coche.findByIdAndRemove(idCoche).then(
+        cocheEliminado => {
+            res.status(200).send({accion: 'delete', data: cocheEliminado})
+        }
+    ).catch(
+        err => {
+            res.status(500).send({accion: 'delete', mensaje: 'problema al eliminar el coche: ' + err})
+        }
+    )
     
 }
 
