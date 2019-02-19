@@ -1,8 +1,6 @@
-var mongoose = require('mongoose')
-
-var Schema = mongoose.Schema
-
-var CocheSchema = Schema(
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
+const CocheSchema = Schema(
     {
         _id:{type:Schema.ObjectId , auto:true},
         nombre:String,
